@@ -1,0 +1,48 @@
+var request = require("request");
+var fs = require("fs");
+var cheerio = require('cheerio');
+var _ = require ('underscore');
+var JSONArray = [];
+
+//var testObj =  { departmentName: 'CS',
+//    departmentLink: 'http://nuapps3.neu.edu/applications/cdr.nsf/weblinkundergrad?openpage'};
+//test object for testing
+
+var getDepartments = function() {
+	var departmentObjects = [];
+	var deptObj = {};
+
+	request({
+		uri: "http://nuapps3.neu.edu/applications/cdr.nsf/weblinkundergrad?openpage" //the main url we will be working from
+		}, function(error, response, body) {
+			var $ = cheerio.load(body);
+
+			$('a').each(function(){							//very important! defines the tag that will be searched. Can use. children() or define attr for specifics
+				var courseLink = this.attr('href');
+				console.log(courseLink);
+				deptObj.departmentName = this.text();
+				deptObj.departmentLink = courseLink;
+				departmentObjects.push(deptObj);
+				deptObj = {};
+
+			});
+		});
+};
+
+var getCourses = function(Obj){
+	var deptObj = Obj;
+	deptObj['courses'] = [];
+	var courseObj = {};
+
+	request({
+		uri: deptObj.departmentLink
+		}, function(error, response, body) {
+			var $ = cheerio.load(body);
+			$('tbody').each(function(){
+				console.log(this.text());
+			});
+		});
+};
+A
+getDepartments();
+//getCourses(testObj);
