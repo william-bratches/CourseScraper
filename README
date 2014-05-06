@@ -1,0 +1,1 @@
+This directory contains a series of javascript-based webscrapers used to pull coursenames and instructors (if possible) from university directories. Still a work in progress; each school requires its own scraper, and new schools will be added as they are completed.
